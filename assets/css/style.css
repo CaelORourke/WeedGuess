@@ -1,23 +1,27 @@
-/* color theme by https://coolors.co/721121-a52c40-f2526d-fbab9e-ccb3b7 */
+/* Palette URL: http://paletton.com/#uid=1330u0kllllaFw0g0qFqFg0w0aF */
 
-/* #f2526d */
+/* .color-primary-0 { color: #277553 }	Main Primary color */
+/* .color-primary-1 { color: #75AF96 } */
+/* .color-primary-2 { color: #499272 } */
+/* .color-primary-3 { color: #0F5738 } */
+/* .color-primary-4 { color: #003A21 } */
 
 body {
-    background-color: #ccb3b7;
+    background-color: #75af96;
 }
 
 .jumbotron {
-    background-color: #721121;
-    color: #fbab9e;
+    background-color: #0f5738;
+    color: #75af96;
 }
 
 .card {
-    background-color: #a52c40;
-    color: #fbab9e;
+    background-color: #499272;
+    color: #0f5738;
 }
 
 .my-4 {
-    border-color: #fbab9e;
+    border-color: #75af96;
 }
 
 #timerDisplay {
@@ -25,5 +29,4 @@ body {
     font-size: 120px;
     text-align: center;
     background: black;
-  }
-  
+}
