@@ -13,6 +13,37 @@ $(document).ready(function () {
     var correctGuessSound = $("#correctGuessSound")[0];
     var wrongGuessSound = $("#wrongGuessSound")[0];
 
+    function convertStrainData(response) {
+        var strainsData = [];
+        for (var index in response) {
+            // console.log(index);
+            // console.log(strains[index]);
+            var strain = {
+                id: response[index].id,
+                name: index,
+                race: response[index].race,
+                effects: response[index].effects,
+                flavors: response[index].flavors
+            };
+            strainsData.push(strain);
+        }
+        // console.log(strainData);
+        return strainsData;
+    };
+
+    function getStrains() {
+        if (localStorage.getItem("strains") === null) {
+            theStrainApi.getAllStrains().then(function (response) {
+                // console.log(response);
+                localStorage.setItem("strains", JSON.stringify(convertStrainData(response)));
+                // TODO: start game
+            });
+        }
+        else {
+            //TODO: start game
+        }
+    }
+
     function chooseRandomWord() {
         currentWord = wordsToGuess[Math.floor(Math.random() * wordsToGuess.length)];
         console.log("currentWord='" + currentWord + "'");
@@ -131,6 +162,7 @@ $(document).ready(function () {
         showGameOver("Time's up!");
     };
 
+    getStrains();
     resetGame();
 
     // listen for keys that players type
