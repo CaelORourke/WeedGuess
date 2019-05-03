@@ -1,0 +1,29 @@
+/* color theme by https://coolors.co/721121-a52c40-f2526d-fbab9e-ccb3b7 */
+
+/* #f2526d */
+
+body {
+    background-color: #ccb3b7;
+}
+
+.jumbotron {
+    background-color: #721121;
+    color: #fbab9e;
+}
+
+.card {
+    background-color: #a52c40;
+    color: #fbab9e;
+}
+
+.my-4 {
+    border-color: #fbab9e;
+}
+
+#timerDisplay {
+    font-family: monospace;
+    font-size: 120px;
+    text-align: center;
+    background: black;
+  }
+  
