@@ -1,5 +1,3 @@
-var keyPressed = "";
-
 $(document).ready(function () {
     var correctGuessSound = $("#correctGuessSound")[0];
     var wrongGuessSound = $("#wrongGuessSound")[0];
@@ -30,7 +28,6 @@ $(document).ready(function () {
 
     function newRound() {
         wordGuess.newRound();
-        keyPressed = "";
         displayStats();
         stopwatch.resetTimer();
         stopwatch.startTimer();
@@ -49,10 +46,10 @@ $(document).ready(function () {
 
     function resetGame() {
         wordGuess.resetGame();
-        $("#instructions").text("Press any key to get started!");
         stopwatch.startTime = 60;//seconds
         stopwatch.resetTimer();
         clearDisplay();
+        $("#instructions").text("Press any key to get started!");
     }
 
     function showGameOver(message) {
@@ -99,7 +96,7 @@ $(document).ready(function () {
             if (event.keyCode >= 65 && event.keyCode <= 90) {
 
                 // console.log(event.key.toLowerCase());
-                keyPressed = event.key.toLowerCase();
+                var keyPressed = event.key.toLowerCase();
 
                 if (wordGuess.lettersGuessed.indexOf(keyPressed) > -1) {
                     // don't let the user make the same guess
