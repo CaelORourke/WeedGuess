@@ -1,47 +1,8 @@
-var wins = 0;
-var losses = 0;
-var guessesRemaining = 6;
 var keyPressed = "";
-var currentWord = "";
-var lettersInWord = [];
-var lettersToDisplay = [];
-var lettersGuessed = [];
-var gameStarted = false;
-var score = 0;
 
 $(document).ready(function () {
     var correctGuessSound = $("#correctGuessSound")[0];
     var wrongGuessSound = $("#wrongGuessSound")[0];
-
-    function chooseRandomWord() {
-        currentWord = wordsToGuess[Math.floor(Math.random() * wordsToGuess.length)];
-        console.log("currentWord='" + currentWord + "'");
-    }
-
-    function getLettersToDisplay() {
-        lettersInWord = currentWord.split("");
-
-        for (let index = 0; index < lettersInWord.length; index++) {
-            if (lettersInWord[index] === " ") {
-                lettersToDisplay[index] = " ";
-            }
-            else if (lettersInWord[index] === "-") {
-                lettersToDisplay[index] = "-";
-            }
-            else {
-                lettersToDisplay[index] = "_";
-            }
-        }
-        // console.log(lettersToDisplay);
-    }
-
-    function getLetterScore(letters) {
-        var score = 0;
-        for (var i = 0; i < letters.length; ++i) {
-            score += letterScores[letters[i]] || 0;
-        }
-        return score;
-    }
 
     function clearDisplay() {
         $("#currentWord, #guessesRemaining, #lettersGuessed, #currentWordLabel, #lossesLabel, #guessesRemainingLabel, #lettersGuessedLabel").empty();
@@ -55,61 +16,24 @@ $(document).ready(function () {
 
     function displayStats() {
         // display the current word
-        $("#currentWord").html(lettersToDisplay.join("&nbsp;"));
+        $("#currentWord").html(wordGuess.lettersToDisplay.join("&nbsp;"));
 
         // display the score
-        $("#score").text(score);
+        $("#score").text(wordGuess.score);
 
         // display the guesses remaining
-        $("#guessesRemaining").text(guessesRemaining);
+        $("#guessesRemaining").text(wordGuess.guessesRemaining);
 
         // display the letters guessed
-        $("#lettersGuessed").text(lettersGuessed.join(" "));
-    }
-
-    function resetGame() {
-        wins = 0;
-        losses = 0;
-        score = 0;
-        gameStarted = false;
-        $("#instructions").text("Press any key to get started!");
-        stopwatch.startTime = 60;//seconds
-        stopwatch.resetTimer();
-        clearDisplay();
+        $("#lettersGuessed").text(wordGuess.lettersGuessed.join(" "));
     }
 
     function newRound() {
-        guessesRemaining = 6;
+        wordGuess.newRound();
         keyPressed = "";
-        lettersInWord = [];
-        lettersToDisplay = [];
-        lettersGuessed = [];
-        chooseRandomWord();
-        getLettersToDisplay();
-        gameStarted = true;
         displayStats();
         stopwatch.resetTimer();
         stopwatch.startTimer();
-    }
-
-    function updateLettersToDisplay(letter) {
-        for (let index = 0; index < lettersInWord.length; index++) {
-            if (letter === lettersInWord[index].toLowerCase()) {
-                lettersToDisplay[index] = lettersInWord[index];
-            }
-        }
-    }
-
-    function showQuitOrContinue(title, message) {
-        stopwatch.stopTimer();
-        $('#winOrLossLabel').html(title);
-        $('#winOrLossMessage').html(message);
-        $('#quitOrContinueDialog').modal('show');
-    }
-
-    function showGameOver(message) {
-        $('#gameOverMessage').html(message);
-        $('#gameOverDialog').modal('show');
     }
 
     function playSound(sound) {
@@ -123,6 +47,26 @@ $(document).ready(function () {
         }
     }
 
+    function resetGame() {
+        wordGuess.resetGame();
+        $("#instructions").text("Press any key to get started!");
+        stopwatch.startTime = 60;//seconds
+        stopwatch.resetTimer();
+        clearDisplay();
+    }
+
+    function showGameOver(message) {
+        $('#gameOverMessage').html(message);
+        $('#gameOverDialog').modal('show');
+    }
+
+    function showQuitOrContinue(title, message) {
+        stopwatch.stopTimer();
+        $('#winOrLossLabel').html(title);
+        $('#winOrLossMessage').html(message);
+        $('#quitOrContinueDialog').modal('show');
+    }
+
     stopwatch.displayTime = function (time) {
         $("#timerDisplay .card-text").text(time)
     };
@@ -130,69 +74,6 @@ $(document).ready(function () {
     stopwatch.timesUp = function () {
         showGameOver("Time's up!");
     };
-
-    resetGame();
-
-    // listen for keys that players type
-    $(document).keyup(function (event) {
-        if (gameStarted) {
-            // NOTE: we only care about letters
-            if (event.keyCode >= 65 && event.keyCode <= 90) {
-
-                // console.log(event.key.toLowerCase());
-                keyPressed = event.key.toLowerCase();
-
-                if (lettersGuessed.indexOf(keyPressed) > -1) {
-                    // don't let the user make the same guess
-                    return;
-                }
-                else {
-                    lettersGuessed.push(keyPressed);
-                    lettersGuessed.sort();
-                }
-
-                // check if key pressed is in the current word
-                if ((currentWord.indexOf(keyPressed) > -1) || (currentWord.indexOf(keyPressed.toUpperCase()) > -1)) {
-                    // console.log("correct guess");
-                    updateLettersToDisplay(keyPressed);
-                    playSound(correctGuessSound);
-                }
-                else {
-                    // console.log("wrong guess");
-                    guessesRemaining--;
-                    playSound(wrongGuessSound);
-                }
-
-                // check if user won
-                if (lettersInWord.toString() === lettersToDisplay.toString()) {
-                    wins++;
-                    // score points for letters in the word
-                    score += getLetterScore(lettersInWord) * 100;
-
-                    if (stopwatch.time > 0) {
-                        // score points for time remaining
-                        score += (stopwatch.time * 10);
-                    }
-
-                    showQuitOrContinue("Congratulations!", "You won!");
-                }
-
-                // check is user lost
-                if (guessesRemaining < 1) {
-                    losses++;
-                    stopwatch.stopTimer();
-                    showGameOver("You lost!");
-                }
-
-                displayStats()
-            }
-        }
-        else {
-            $("#instructions").text("Press a letter key to guess.");
-            displayLabels();
-            newRound();
-        }
-    });
 
     $("#continueGameButton").on("click", function () {
         $('#quitOrContinueDialog').modal('hide');
@@ -207,5 +88,68 @@ $(document).ready(function () {
     $("#okButton").on("click", function () {
         $('#gameOverDialog').modal('hide');
         resetGame();
+    });
+
+    resetGame();
+
+    // listen for keys that players type
+    $(document).keyup(function (event) {
+        if (wordGuess.gameStarted) {
+            // NOTE: we only care about letters
+            if (event.keyCode >= 65 && event.keyCode <= 90) {
+
+                // console.log(event.key.toLowerCase());
+                keyPressed = event.key.toLowerCase();
+
+                if (wordGuess.lettersGuessed.indexOf(keyPressed) > -1) {
+                    // don't let the user make the same guess
+                    return;
+                }
+                else {
+                    wordGuess.lettersGuessed.push(keyPressed);
+                    wordGuess.lettersGuessed.sort();
+                }
+
+                // check if key pressed is in the current word
+                if ((wordGuess.currentWord.indexOf(keyPressed) > -1) || (wordGuess.currentWord.indexOf(keyPressed.toUpperCase()) > -1)) {
+                    // console.log("correct guess");
+                    wordGuess.updateLettersToDisplay(keyPressed);
+                    playSound(correctGuessSound);
+                }
+                else {
+                    // console.log("wrong guess");
+                    wordGuess.guessesRemaining--;
+                    playSound(wrongGuessSound);
+                }
+
+                // check if user won
+                if (wordGuess.lettersInWord.toString() === wordGuess.lettersToDisplay.toString()) {
+                    wordGuess.wins++;
+                    // score points for letters in the word
+                    wordGuess.score += wordGuess.getLetterScore(wordGuess.lettersInWord) * 100;
+
+                    if (stopwatch.time > 0) {
+                        // score points for time remaining
+                        wordGuess.score += (stopwatch.time * 10);
+                    }
+
+                    showQuitOrContinue("Congratulations!", "You won!");
+                }
+
+                // check is user lost
+                if (wordGuess.guessesRemaining < 1) {
+                    wordGuess.losses++;
+                    stopwatch.stopTimer();
+                    showGameOver("You lost!");
+                }
+
+                displayStats()
+            }
+        }
+        else {
+            $("#instructions").text("Press a letter key to guess.");
+            displayLabels();
+            newRound();
+        }
     });
 });
