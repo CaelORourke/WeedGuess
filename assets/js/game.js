@@ -20,20 +20,22 @@ $(document).ready(function () {
     };
 
     function getStrains() {
-        if (localStorage.getItem("strains") === null) {
-            theStrainApi.getAllStrains().then(function (response) {
-                var myData = convertStrainData(response);
-                localStorage.setItem("strains", JSON.stringify(myData));
+        return new Promise(function (resolve, reject) {
+            if (localStorage.getItem("strains") === null) {
+                theStrainApi.getAllStrains().then(function (response) {
+                    var myData = convertStrainData(response);
+                    localStorage.setItem("strains", JSON.stringify(myData));
+                    wordsToGuess = myData.map(s => s.name);
+                    resolve(true);
+                });
+            }
+            else {
+                var myData = JSON.parse(localStorage.getItem("strains"));
                 wordsToGuess = myData.map(s => s.name);
-                isDataAvailable = true;
-            });
-        }
-        else {
-            var myData = JSON.parse(localStorage.getItem("strains"));
-            wordsToGuess = myData.map(s => s.name);
-            isDataAvailable = true;
-        }
-    }
+                resolve(true);
+            }
+        });
+    };
 
     function clearDisplay() {
         $("#currentWord, #guessesRemaining, #lettersGuessed, #currentWordLabel, #lossesLabel, #guessesRemainingLabel, #lettersGuessedLabel").empty();
@@ -113,8 +115,10 @@ $(document).ready(function () {
         resetGame();
     });
 
-    getStrains();
-    resetGame();
+    getStrains().then(() => {
+        isDataAvailable = true;
+        resetGame();
+    });
 
     $(document).keyup(function (event) {
         if (wordGuess.getGameStarted()) {
