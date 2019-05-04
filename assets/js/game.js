@@ -5,25 +5,19 @@ $(document).ready(function () {
     function convertStrainData(response) {
         var strainsData = [];
         for (var index in response) {
-            // console.log(index);
-            // console.log(strains[index]);
             var strain = {
                 id: response[index].id,
                 name: index,
-                race: response[index].race,
-                effects: response[index].effects,
-                flavors: response[index].flavors
+                race: response[index].race
             };
             strainsData.push(strain);
         }
-        // console.log(strainData);
         return strainsData;
     };
 
     function getStrains() {
         if (localStorage.getItem("strains") === null) {
             theStrainApi.getAllStrains().then(function (response) {
-                // console.log(response);
                 localStorage.setItem("strains", JSON.stringify(convertStrainData(response)));
                 // TODO: start game
             });
