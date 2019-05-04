@@ -8,6 +8,8 @@ var wordGuess = (function () {
     var lettersGuessed = [];
     var gameStarted = false;
     var score = 0;
+    var gameLost = false;
+    var gameWon = false;
 
     function chooseRandomWord() {
         currentWord = wordsToGuess[Math.floor(Math.random() * wordsToGuess.length)];
@@ -78,7 +80,6 @@ var wordGuess = (function () {
 
         hasGuessedLetter: function(letter) {
             if (lettersGuessed.indexOf(letter) > -1) {
-                // don't let the user make the same guess
                 return true;
             }
             else {
@@ -89,42 +90,42 @@ var wordGuess = (function () {
         },
 
         hasUserLost: function() {
-            // check is user lost
-            if (guessesRemaining < 1) {
-                losses++;
-                return true;
-            }
-            else {
-                return false;
-            }
+            return gameWon;
         },
 
-        hasUserWon: function(timeRemaining) {
-            // check if user won
-            if (lettersInWord.toString() === lettersToDisplay.toString()) {
-                wins++;
-                // score points for letters in the word
-                score += getLetterScore(lettersInWord) * 100;
-
-                if (timeRemaining > 0) {
-                    // score points for time remaining
-                    score += (timeRemaining * 10);
-                }
-                return true;
-            }
-            else {
-                return false;
-            }
+        hasUserWon: function() {
+            return gameLost;
         },
 
-        isLetterInWord: function(letter) {
+        isLetterInWord: function(letter, timeRemaining) {
             if ((currentWord.indexOf(letter) > -1) || (currentWord.indexOf(letter.toUpperCase()) > -1)) {
                 // console.log("correct guess");
                 updateLettersToDisplay(letter);
+
+                // check if user won
+                if (lettersInWord.toString() === lettersToDisplay.toString()) {
+                    wins++;
+                    // score points for letters in the word
+                    score += getLetterScore(lettersInWord) * 100;
+
+                    if (timeRemaining > 0) {
+                        // score points for time remaining
+                        score += (timeRemaining * 10);
+                    }
+                    gameLost = true;
+                }
+
                 return true;
             }
             else {
                 guessesRemaining--;
+
+                // check if user lost
+                if (guessesRemaining < 1) {
+                    losses++;
+                    gameWon = true;
+                }
+
                 return false;
             }
         },
@@ -136,6 +137,8 @@ var wordGuess = (function () {
             lettersGuessed = [];
             chooseRandomWord();
             setLettersToDisplay();
+            gameWon = false;
+            gameLost = false;
             gameStarted = true;
         },
 
