@@ -1,46 +1,28 @@
-var stopwatch = {
-    intervalId: null,
-    timerRunning: false,
-    time: 0,
-    startTime: 60,
-    startTimer: function () {
-        if (!this.timerRunning) {
-            this.intervalId = setInterval(this.timerTick.bind(this), 1000);
-            this.timerRunning = true;
-        }
-    },
-    stopTimer: function () {
-        if (this.timerRunning) {
-            clearInterval(this.intervalId);
-            this.timerRunning = false;
-        }
-    },
-    resetTimer: function () {
-        this.time = this.startTime;
-        if (typeof this.displayTime === "function") {
-            this.displayTime(this.formatTime(this.time));
-        }
-    },
-    displayTime: function (time) {
-    },
-    timesUp: function () {
-    },
-    timerTick: function () {
-        this.time--;
+var stopwatch = (function () {
+    var intervalId = null;
+    var timerRunning = false;
+    var time = 0;
+    var startTime = 60;
+    var displayTime = null;
+    var timesUp = null;
 
-        if (typeof this.displayTime === "function") {
-            this.displayTime(this.formatTime(this.time));
+    function timerTick() {
+        time--;
+
+        if (typeof displayTime === "function") {
+            displayTime(formatTime(time));
         }
 
-        if (this.time <= 0) {
-            this.stopTimer();
-            this.time = 0;
-            if (typeof this.timesUp === "function") {
-                this.timesUp();
+        if (time <= 0) {
+            timer.stopTimer();
+            time = 0;
+            if (typeof timesUp === "function") {
+                timesUp();
             }
         }
-    },
-    formatTime: function (time) {
+    };
+
+    function formatTime(time) {
         var minutes = Math.floor(time / 60);
         var seconds = time - (minutes * 60);
 
@@ -53,5 +35,37 @@ var stopwatch = {
         }
 
         return minutes + ":" + seconds;
-    }
-}
+    };
+
+    var timer = {
+        startTimer: function () {
+            if (!timerRunning) {
+                intervalId = setInterval(timerTick.bind(this), 1000);
+                timerRunning = true;
+            }
+        },
+
+        stopTimer: function () {
+            if (timerRunning) {
+                clearInterval(intervalId);
+                timerRunning = false;
+            }
+        },
+        resetTimer: function () {
+            time = startTime;
+            if (typeof displayTime === "function") {
+                displayTime(formatTime(time));
+            }
+        },
+
+        onDisplayTime: function (displayTimeCallback) {
+            displayTime = displayTimeCallback;
+        },
+
+        onTimesUp: function (timesUpCallback) {
+            timesUp = timesUpCallback;
+        }
+    };
+
+    return timer;
+})();

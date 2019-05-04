@@ -92,13 +92,13 @@ $(document).ready(function () {
         $('#quitOrContinueDialog').modal('show');
     }
 
-    stopwatch.displayTime = function (time) {
-        $("#timerDisplay .card-text").text(time)
-    };
+    stopwatch.onDisplayTime(function (time) {
+        $("#timerDisplay .card-text").text(time);
+    });
 
-    stopwatch.timesUp = function () {
+    stopwatch.onTimesUp(function () {
         showGameOver("Time's up!");
-    };
+    });
 
     $("#continueGameButton").on("click", function () {
         $('#quitOrContinueDialog').modal('hide');
