@@ -3,7 +3,7 @@
 var theStrainApi = (function () {
     var apiKey = "mppWKrF";
     function baseURL(methodUrl) {
-        return "http://strainapi.evanbusse.com/" + apiKey + "/" + methodUrl;
+        return "https://strainapi.evanbusse.com/" + apiKey + "/" + methodUrl;
     };
 
     function getApiData(methodUrl) {
