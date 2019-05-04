@@ -48,10 +48,6 @@ var wordGuess = (function () {
     };
 
     return {
-        getCurrentWord: function () {
-            return currentWord;
-        },
-
         getGameStarted: function () {
             return gameStarted;
         },
@@ -62,10 +58,6 @@ var wordGuess = (function () {
 
         getLettersGuessed: function () {
             return lettersGuessed;
-        },
-
-        getLettersInWord: function () {
-            return lettersInWord;
         },
 
         getLettersToDisplay: function () {
