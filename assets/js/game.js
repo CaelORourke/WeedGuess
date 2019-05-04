@@ -13,16 +13,9 @@ $(document).ready(function () {
     }
 
     function displayStats() {
-        // display the current word
         $("#currentWord").html(wordGuess.getLettersToDisplay().join("&nbsp;"));
-
-        // display the score
         $("#score").text(wordGuess.getScore());
-
-        // display the guesses remaining
         $("#guessesRemaining").text(wordGuess.getGuessesRemaining());
-
-        // display the letters guessed
         $("#lettersGuessed").text(wordGuess.getLettersGuessed().join(" "));
     }
 
@@ -101,15 +94,14 @@ $(document).ready(function () {
                     return;
                 }
 
-                // check if key pressed is in the current word
-                if (wordGuess.isLetterInWord(keyPressed)) {
+                if (wordGuess.isLetterInWord(keyPressed, stopwatch.time)) {
                     playSound(correctGuessSound);
                 }
                 else {
                     playSound(wrongGuessSound);
                 }
 
-                if (wordGuess.hasUserWon(stopwatch.time)) {
+                if (wordGuess.hasUserWon()) {
                     showQuitOrContinue("Congratulations!", "You won!");
                 }
 
