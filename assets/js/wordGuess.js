@@ -1,24 +1,24 @@
-var wordGuess = (function () {
-    var wins = 0;
-    var losses = 0;
-    var guessesRemaining = 6;
-    var currentWord = "";
-    var lettersInWord = [];
-    var lettersToDisplay = [];
-    var lettersGuessed = [];
-    var gameStarted = false;
-    var score = 0;
-    var gameLost = false;
-    var gameWon = false;
+const wordGuess = (function () {
+    let currentWord = "";
+    let gameLost = false;
+    let gameStarted = false;
+    let gameWon = false;
+    let guessesRemaining = 6;
+    let lettersGuessed = [];
+    let lettersInWord = [];
+    let lettersToDisplay = [];
+    let losses = 0;
+    let score = 0;
+    let wins = 0;
 
     function chooseRandomWord() {
         currentWord = wordsToGuess[Math.floor(Math.random() * wordsToGuess.length)];
-        console.log("currentWord='" + currentWord + "'");
+        console.log(`currentWord='${currentWord}'`);
     };
 
     function getLetterScore(letters) {
-        var score = 0;
-        for (var i = 0; i < letters.length; ++i) {
+        let score = 0;
+        for (let i = 0; i < letters.length; ++i) {
             score += letterScores[letters[i]] || 0;
         }
         return score;
@@ -27,58 +27,58 @@ var wordGuess = (function () {
     function setLettersToDisplay() {
         lettersInWord = currentWord.split("");
 
-        for (let index = 0; index < lettersInWord.length; index++) {
-            if (lettersInWord[index] === " ") {
-                lettersToDisplay[index] = " ";
+        for (let i = 0; i < lettersInWord.length; i++) {
+            if (lettersInWord[i] === " ") {
+                lettersToDisplay[i] = " ";
             }
-            else if (lettersInWord[index] === "-") {
-                lettersToDisplay[index] = "-";
+            else if (lettersInWord[i] === "-") {
+                lettersToDisplay[i] = "-";
             }
             else {
-                lettersToDisplay[index] = "_";
+                lettersToDisplay[i] = "_";
             }
         }
         // console.log(lettersToDisplay);
     };
 
     function updateLettersToDisplay(letter) {
-        for (let index = 0; index < lettersInWord.length; index++) {
-            if (letter === lettersInWord[index].toLowerCase()) {
-                lettersToDisplay[index] = lettersInWord[index];
+        for (let i = 0; i < lettersInWord.length; i++) {
+            if (letter === lettersInWord[i].toLowerCase()) {
+                lettersToDisplay[i] = lettersInWord[i];
             }
         }
     };
 
     return {
-        getGameStarted: function () {
+        getGameStarted() {
             return gameStarted;
         },
 
-        getGuessesRemaining: function () {
+        getGuessesRemaining() {
             return guessesRemaining;
         },
 
-        getLettersGuessed: function () {
+        getLettersGuessed() {
             return lettersGuessed;
         },
 
-        getLettersToDisplay: function () {
+        getLettersToDisplay() {
             return lettersToDisplay;
         },
 
-        getLosses: function () {
+        getLosses() {
             return losses;
         },
 
-        getScore: function () {
+        getScore() {
             return score;
         },
 
-        getWins: function () {
+        getWins() {
             return wins;
         },
 
-        hasGuessedLetter: function(letter) {
+        hasGuessedLetter(letter) {
             if (lettersGuessed.indexOf(letter) > -1) {
                 return true;
             }
@@ -89,15 +89,15 @@ var wordGuess = (function () {
             }
         },
 
-        hasUserLost: function() {
+        hasUserLost() {
             return gameWon;
         },
 
-        hasUserWon: function() {
+        hasUserWon() {
             return gameLost;
         },
 
-        isLetterInWord: function(letter, timeRemaining) {
+        isLetterInWord(letter, timeRemaining) {
             if ((currentWord.indexOf(letter) > -1) || (currentWord.indexOf(letter.toUpperCase()) > -1)) {
                 // console.log("correct guess");
                 updateLettersToDisplay(letter);
@@ -130,7 +130,7 @@ var wordGuess = (function () {
             }
         },
 
-        newRound: function () {
+        newRound() {
             guessesRemaining = 6;
             lettersInWord = [];
             lettersToDisplay = [];
@@ -142,7 +142,7 @@ var wordGuess = (function () {
             gameStarted = true;
         },
 
-        resetGame: function () {
+        resetGame() {
             wins = 0;
             losses = 0;
             score = 0;

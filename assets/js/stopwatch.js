@@ -1,10 +1,25 @@
-var stopwatch = (function () {
-    var intervalId = null;
-    var timerRunning = false;
-    var time = 0;
-    var startTime = 60;
-    var displayTime = null;
-    var timesUp = null;
+const stopwatch = (function () {
+    let displayTime = null;
+    let intervalId = null;
+    let startTime = 60;
+    let time = 0;
+    let timerRunning = false;
+    let timesUp = null;
+
+    function formatTime(time) {
+        let minutes = Math.floor(time / 60);
+        let seconds = time - (minutes * 60);
+
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+
+        return minutes + ":" + seconds;
+    };
 
     function timerTick() {
         time--;
@@ -22,48 +37,34 @@ var stopwatch = (function () {
         }
     };
 
-    function formatTime(time) {
-        var minutes = Math.floor(time / 60);
-        var seconds = time - (minutes * 60);
-
-        if (seconds < 10) {
-            seconds = "0" + seconds;
-        }
-
-        if (minutes < 10) {
-            minutes = "0" + minutes;
-        }
-
-        return minutes + ":" + seconds;
-    };
-
-    var timer = {
-        startTimer: function () {
-            if (!timerRunning) {
-                intervalId = setInterval(timerTick.bind(this), 1000);
-                timerRunning = true;
-            }
+    let timer = {
+        onDisplayTime(displayTimeCallback) {
+            displayTime = displayTimeCallback;
         },
 
-        stopTimer: function () {
-            if (timerRunning) {
-                clearInterval(intervalId);
-                timerRunning = false;
-            }
+        onTimesUp(timesUpCallback) {
+            timesUp = timesUpCallback;
         },
-        resetTimer: function () {
+
+        resetTimer() {
             time = startTime;
             if (typeof displayTime === "function") {
                 displayTime(formatTime(time));
             }
         },
 
-        onDisplayTime: function (displayTimeCallback) {
-            displayTime = displayTimeCallback;
+        startTimer() {
+            if (!timerRunning) {
+                intervalId = setInterval(timerTick.bind(this), 1000);
+                timerRunning = true;
+            }
         },
 
-        onTimesUp: function (timesUpCallback) {
-            timesUp = timesUpCallback;
+        stopTimer() {
+            if (timerRunning) {
+                clearInterval(intervalId);
+                timerRunning = false;
+            }
         }
     };
 

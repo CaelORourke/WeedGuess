@@ -1,7 +1,8 @@
 // Documentation for the Strain API can be found at http://strains.evanbusse.com/index.html
 
-var theStrainApi = (function () {
-    var apiKey = "mppWKrF";
+const theStrainApi = (function () {
+    const apiKey = "mppWKrF";
+
     function baseURL(methodUrl) {
         return "https://strainapi.evanbusse.com/" + apiKey + "/" + methodUrl;
     };
@@ -19,12 +20,12 @@ var theStrainApi = (function () {
         // For example, getting the list of strains or effects so you know what search parameters are available.
         info: {
             // List all Effects
-            getAllEffects: function () {
+            getAllEffects() {
                 return getApiData("searchdata/effects");
             },
 
             // List all Flavors
-            getAllFlavors: function () {
+            getAllFlavors() {
                 return getApiData("searchdata/flavors");
             }
         },
@@ -33,22 +34,22 @@ var theStrainApi = (function () {
         // The main type of query used to get strain information based on a variety of criteria.
         search: {
             // Search for strains by name
-            getStrainsByName: function (name) {
+            getStrainsByName(name) {
                 return getApiData("strains/search/name/" + name);
             },
 
             // Search for strains by race (Available races: Sativa, Indica, and Hybrid)
-            getStrainsByRace: function (race) {
+            getStrainsByRace(race) {
                 return getApiData("strains/search/race/" + race);
             },
 
             // Search for strains by effect
-            getStrainsByEffect: function (effect) {
+            getStrainsByEffect(effect) {
                 return getApiData("strains/search/effect/" + effect);
             },
 
             // Search for strains by flavor
-            getStrainsByFlavor: function (flavor) {
+            getStrainsByFlavor(flavor) {
                 return getApiData("strains/search/flavor/" + flavor);
             }
         },
@@ -58,23 +59,23 @@ var theStrainApi = (function () {
         // These additional queries use the strain id to return its corresponding effect or flavor data.
         data: {
             // Get strain descriptions
-            getStrainDescriptions: function (strainId) {
+            getStrainDescriptions(strainId) {
                 return getApiData("strains/data/desc/" + strainId);
             },
 
             // Get strain effects
-            getStrainEffects: function (strainId) {
+            getStrainEffects(strainId) {
                 return getApiData("strains/data/effects/" + strainId);
             },
 
             // Get strain flavors
-            getStrainFlavors: function (strainId) {
+            getStrainFlavors(strainId) {
                 return getApiData("strains/data/flavors/" + strainId);
             }
         },
 
         // Get all strains (Please use this route sparingly as it is requires a lot of computing power)
-        getAllStrains: function () {
+        getAllStrains() {
             return getApiData("strains/search/all");
         }
     };

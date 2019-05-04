@@ -1,15 +1,15 @@
 $(document).ready(function () {
-    var correctGuessSound = $("#correctGuessSound")[0];
-    var wrongGuessSound = $("#wrongGuessSound")[0];
+    const correctGuessSound = $("#correctGuessSound")[0];
+    const wrongGuessSound = $("#wrongGuessSound")[0];
 
-    var isDataAvailable = false;
+    let isDataAvailable = false;
 
     //NOTE: the api returns JSON with a key for each strain.
     function convertStrainData(response) {
         //convert the data to an array of objects and only keep properties that we need.
         var strainsData = [];
-        for (var index in response) {
-            var strain = {
+        for (let index in response) {
+            let strain = {
                 id: response[index].id,
                 name: index,
                 race: response[index].race
@@ -20,17 +20,17 @@ $(document).ready(function () {
     };
 
     function getStrains() {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             if (localStorage.getItem("strains") === null) {
-                theStrainApi.getAllStrains().then(function (response) {
-                    var myData = convertStrainData(response);
+                theStrainApi.getAllStrains().then((response) => {
+                    let myData = convertStrainData(response);
                     localStorage.setItem("strains", JSON.stringify(myData));
                     wordsToGuess = myData.map(s => s.name);
                     resolve(true);
                 });
             }
             else {
-                var myData = JSON.parse(localStorage.getItem("strains"));
+                let myData = JSON.parse(localStorage.getItem("strains"));
                 wordsToGuess = myData.map(s => s.name);
                 resolve(true);
             }
@@ -92,25 +92,25 @@ $(document).ready(function () {
         $('#quitOrContinueDialog').modal('show');
     }
 
-    stopwatch.onDisplayTime(function (time) {
+    stopwatch.onDisplayTime((time) => {
         $("#timerDisplay .card-text").text(time);
     });
 
-    stopwatch.onTimesUp(function () {
+    stopwatch.onTimesUp(() => {
         showGameOver("Time's up!");
     });
 
-    $("#continueGameButton").on("click", function () {
+    $("#continueGameButton").on("click", () => {
         $('#quitOrContinueDialog').modal('hide');
         newRound();
     });
 
-    $("#quitGameButton, #closeButton").on("click", function () {
+    $("#quitGameButton, #closeButton").on("click", () => {
         $('#quitOrContinueDialog').modal('hide');
         resetGame();
     });
 
-    $("#okButton").on("click", function () {
+    $("#okButton").on("click", () => {
         $('#gameOverDialog').modal('hide');
         resetGame();
     });
@@ -120,12 +120,12 @@ $(document).ready(function () {
         resetGame();
     });
 
-    $(document).keyup(function (event) {
+    $(document).keyup((event) => {
         if (wordGuess.getGameStarted()) {
             // NOTE: we only care about letters
             if (event.keyCode >= 65 && event.keyCode <= 90) {
 
-                var keyPressed = event.key.toLowerCase();
+                let keyPressed = event.key.toLowerCase();
 
                 // don't let the user make the same guess
                 if (wordGuess.hasGuessedLetter(keyPressed)) {
