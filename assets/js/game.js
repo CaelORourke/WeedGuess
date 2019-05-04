@@ -2,7 +2,11 @@ $(document).ready(function () {
     var correctGuessSound = $("#correctGuessSound")[0];
     var wrongGuessSound = $("#wrongGuessSound")[0];
 
+    var isDataAvailable = false;
+
+    //NOTE: the api returns JSON with a key for each strain.
     function convertStrainData(response) {
+        //convert the data to an array of objects and only keep properties that we need.
         var strainsData = [];
         for (var index in response) {
             var strain = {
@@ -18,12 +22,16 @@ $(document).ready(function () {
     function getStrains() {
         if (localStorage.getItem("strains") === null) {
             theStrainApi.getAllStrains().then(function (response) {
-                localStorage.setItem("strains", JSON.stringify(convertStrainData(response)));
-                // TODO: start game
+                var myData = convertStrainData(response);
+                localStorage.setItem("strains", JSON.stringify(myData));
+                wordsToGuess = myData.map(s => s.name);
+                isDataAvailable = true;
             });
         }
         else {
-            //TODO: start game
+            var myData = JSON.parse(localStorage.getItem("strains"));
+            wordsToGuess = myData.map(s => s.name);
+            isDataAvailable = true;
         }
     }
 
@@ -140,9 +148,11 @@ $(document).ready(function () {
             }
         }
         else {
-            $("#instructions").text("Press a letter key to guess.");
-            displayLabels();
-            newRound();
+            if (isDataAvailable) {
+                $("#instructions").text("Press a letter key to guess.");
+                displayLabels();
+                newRound();
+            }
         }
     });
 });
