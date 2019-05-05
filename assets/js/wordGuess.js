@@ -10,6 +10,7 @@ const wordGuess = (function () {
     let losses = 0;
     let score = 0;
     let wins = 0;
+    let wordsGuessed = [];
 
     const letterScores = {
         'a': 1,
@@ -42,7 +43,13 @@ const wordGuess = (function () {
 
     function chooseRandomWord() {
         currentWord = wordsToGuess[Math.floor(Math.random() * wordsToGuess.length)];
-        console.log(`currentWord='${currentWord}'`);
+        if (wordsGuessed.indexOf(currentWord) > -1) {
+            chooseRandomWord();
+        }
+        else {
+            wordsGuessed.push(currentWord);
+            console.log(`currentWord='${currentWord}'`);
+        }
     };
 
     function getLetterScore(letters) {
@@ -175,6 +182,7 @@ const wordGuess = (function () {
             wins = 0;
             losses = 0;
             score = 0;
+            wordsGuessed = [];
             gameStarted = false;
         }
     };
