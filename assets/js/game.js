@@ -116,7 +116,9 @@ $(document).ready(function () {
     });
 
     $("#quitOrContinueDialog, #gameOverDialog").on("hidden.bs.modal", () => {
-        resetGame();
+        if (wordGuess.getGameStarted() && wordGuess.getGamePaused()) {
+            resetGame();
+        }
     });
 
     getStrains().then(() => {
