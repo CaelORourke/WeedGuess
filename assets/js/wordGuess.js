@@ -47,6 +47,7 @@ const wordGuess = (function () {
             chooseRandomWord();
         }
         else {
+            lettersInWord = currentWord.split("");
             wordsGuessed.push(currentWord);
             console.log(`currentWord='${currentWord}'`);
         }
@@ -61,8 +62,6 @@ const wordGuess = (function () {
     };
 
     function setLettersToDisplay() {
-        lettersInWord = currentWord.split("");
-
         for (let i = 0; i < lettersInWord.length; i++) {
             if (lettersInWord[i] === " ") {
                 lettersToDisplay[i] = " ";
