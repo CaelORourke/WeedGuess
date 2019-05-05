@@ -122,6 +122,12 @@ $(document).ready(function () {
 
     $(document).keyup((event) => {
         if (wordGuess.getGameStarted()) {
+            if (event.key === "Escape")
+            {
+                stopwatch.stopTimer();
+                showGameOver("You lost!");
+            }
+
             // NOTE: we only care about letters
             if (event.keyCode >= 65 && event.keyCode <= 90) {
 
@@ -153,7 +159,7 @@ $(document).ready(function () {
         }
         else {
             if (isDataAvailable) {
-                $("#instructions").text("Press a letter key to guess.");
+                $("#instructions").text("Press a letter key to guess. Press Escape key to quit.");
                 displayLabels();
                 newRound();
             }
