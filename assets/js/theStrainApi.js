@@ -74,7 +74,7 @@ const theStrainApi = (function () {
             }
         },
 
-        // Get all strains (Please use this route sparingly as it is requires a lot of computing power)
+        // Get all strains (Please use this route sparingly as it requires a lot of computing power)
         getAllStrains() {
             return getApiData("strains/search/all");
         }
