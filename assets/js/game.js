@@ -129,7 +129,7 @@ $(document).ready(function () {
             }
 
             // NOTE: we only care about letters
-            if (event.keyCode >= 65 && event.keyCode <= 90) {
+            if (event.which >= 65 && event.which <= 90) {
 
                 let keyPressed = event.key.toLowerCase();
 
