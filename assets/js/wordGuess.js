@@ -48,8 +48,11 @@ const wordGuess = (function () {
         }
         else {
             lettersInWord = currentWord.split("");
+            lettersToDisplay = currentWord.replace(/[a-zA-Z]/g, "_").split("");
             wordsGuessed.push(currentWord);
-            console.log(`currentWord='${currentWord}'`);
+            // console.log(`currentWord='${currentWord}'`);
+            // console.log(lettersInWord);
+            // console.log(lettersToDisplay);
         }
     };
 
@@ -59,21 +62,6 @@ const wordGuess = (function () {
             score += letterScores[letters[i]] || 0;
         }
         return score;
-    };
-
-    function setLettersToDisplay() {
-        for (let i = 0; i < lettersInWord.length; i++) {
-            if (lettersInWord[i] === " ") {
-                lettersToDisplay[i] = " ";
-            }
-            else if (lettersInWord[i] === "-") {
-                lettersToDisplay[i] = "-";
-            }
-            else {
-                lettersToDisplay[i] = "_";
-            }
-        }
-        // console.log(lettersToDisplay);
     };
 
     function updateLettersToDisplay(letter) {
@@ -171,7 +159,6 @@ const wordGuess = (function () {
             lettersToDisplay = [];
             lettersGuessed = [];
             chooseRandomWord();
-            setLettersToDisplay();
             gameWon = false;
             gameLost = false;
             gameStarted = true;
