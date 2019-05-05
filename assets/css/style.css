@@ -38,3 +38,21 @@ body {
 .card-text {
     min-height: 24px;
 }
+
+.btn-primary {
+    background-color: #0f5738;
+    border-color: #75af96;
+}
+
+.btn-primary:hover {
+    background-color: #75af96;
+    border-color: #0f5738;
+}
+
+.modal-header {
+    color: #0f5738;
+}
+
+.modal-body {
+    color: #0f5738;
+}
