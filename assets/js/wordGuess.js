@@ -73,6 +73,10 @@ const wordGuess = (function () {
     };
 
     return {
+        getGamePaused() {
+            return gameWon || gameLost;
+        },
+
         getGameStarted() {
             return gameStarted;
         },
@@ -169,6 +173,8 @@ const wordGuess = (function () {
             losses = 0;
             score = 0;
             wordsGuessed = [];
+            gameWon = false;
+            gameLost = false;
             gameStarted = false;
         }
     };

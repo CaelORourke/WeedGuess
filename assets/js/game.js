@@ -115,14 +115,22 @@ $(document).ready(function () {
         resetGame();
     });
 
+    $("#quitOrContinueDialog, #gameOverDialog").on("hidden.bs.modal", () => {
+        resetGame();
+    });
+
     getStrains().then(() => {
         isDataAvailable = true;
         resetGame();
     });
 
     $(document).keyup((event) => {
+        if (wordGuess.getGamePaused()) {
+            return;
+        }
+
         if (wordGuess.getGameStarted()) {
-            if (event.key === "Escape")
+            if (event.which === 32)//spacebar
             {
                 stopwatch.stopTimer();
                 showGameOver("You lost!");
@@ -159,7 +167,7 @@ $(document).ready(function () {
         }
         else {
             if (isDataAvailable) {
-                $("#instructions").text("Press a letter key to guess. Press Escape key to quit.");
+                $("#instructions").text("Press a letter key to guess. Press Spacebar to quit.");
                 displayLabels();
                 newRound();
             }
