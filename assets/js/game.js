@@ -167,7 +167,7 @@ $(document).ready(function () {
         }
         else {
             if (isDataAvailable) {
-                $("#instructions").text("Press a letter key to guess. Press Spacebar to quit.");
+                $("#instructions").text("Press a letter key to guess. Press spacebar to quit.");
                 displayLabels();
                 newRound();
             }
